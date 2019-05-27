@@ -1,0 +1,45 @@
+body{
+     background-color: rgb(241, 221, 161);
+}
+.logmain{
+     background-color: black;
+     color: white;
+     width: 50%;
+     height: 40%;
+     border: black 1em solid;
+     border-radius: 0.3em;
+     margin-bottom: 15%;
+     margin-top: 15%;
+}
+h1{
+     font-size: 1.5em;
+     text-align: center;
+}
+#perNav{
+     font-size: 1.25em;
+     background-color: black;
+}
+.item{
+     margin-top: 1em;
+     list-style: none;
+     padding-left: 0 !important;
+     margin-left: 0 !important;
+}
+ul{
+     padding-left: 0 !important;
+     margin-left: 2px !important;
+}
+a:link, a:visited, a:hover a:active{
+     color: white;
+     text-decoration: none;
+}
+.log, .center{
+     align-content: center;
+     text-align: center;
+}
+label{
+     padding: 5px;
+}
+input:invalid{
+     border: 1px solid red;
+}

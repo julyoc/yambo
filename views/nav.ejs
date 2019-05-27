@@ -1,0 +1,24 @@
+<nav>
+     <ul>
+          <li class="item">
+                    <a href="/<%= url %>/admin">Admin</a>
+          </li>
+          <li class="item">
+               <a href="/<%= url %>/menu">Menu</a>
+          </li>
+          <li class="item">
+               <a href="/<%= url %>/reg">Registro</a>
+          </li>
+          <li class="item">
+               <a href="/<%= url %>/pedidos">pedidos</a>
+          </li>
+          <% if (config){ %>
+               <li class="item">
+                    <a href="/<%= url %>/config">config</a>
+               </li>
+          <% } %>
+          <li class="item">
+               <a href="/logout">Cerrar Sesion</a>
+          </li>
+     </ul>
+</nav>
