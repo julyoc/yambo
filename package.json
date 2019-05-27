@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "softwate para gestion de contabilidad y pedidos (build with pkg)",
   "main": "index.js",
+  "bin": "index.js",
   "scripts": {
     "start": "nodemon .",
     "test": "./__main__.py",
@@ -37,5 +38,34 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-react-app": "^3.1.2"
+  },
+  "pkg": {
+    "scripts": [
+      "models/*",
+      "module/*",
+      "rout/*"
+    ],
+    "assets": [
+      "assets/*",
+      "assets/family/*",
+      "assets/producto/*",
+      "assets/subfamily/*",
+      "public/css/*",
+      "public/js/*",
+      "public/js/jsxbuild/*",
+      "temp/*",
+      "views/*",
+      "views/rootDir/*",
+      "views/rootDir/adminDir/*",
+      "views/rootDir/configDir/*",
+      "views/rootDir/pedDir/*",
+      "node_modules/react/umd",
+      "node_modules/bootstrap/dist/css",
+      "node_modules/react-dom/umd"
+    ],
+    "targets": [
+      "node10-linux-x64", 
+      "node10-win-x64"
+    ]
   }
 }

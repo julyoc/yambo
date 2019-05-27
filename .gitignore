@@ -61,7 +61,18 @@ typings/
 .next
 
 # Ignorar carpeta de assets
-assets/
+assets/family/*.png
+assets/family/*.jpg
+assets/family/*.jpeg
+assets/family/*.gif
+assets/subfamily/*.png
+assets/subfamily/*.jpg
+assets/subfamily/*.jpeg
+assets/subfamily/*.gif
+assets/producto/*.png
+assets/producto/*.jpg
+assets/producto/*.jpeg
+assets/producto/*.gif
 
 # Ignora carpeta temporal
 temp/
