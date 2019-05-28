@@ -94,7 +94,7 @@ class AddUser extends React.Component {
                     <input type="text" name="cargo" id="cargo" value={this.state.cargo} onChange={(event => this.setCargo(event)).bind(this)} required/>
                 </div>
                 <div>
-                    {this.state.cargo != "" && this.state.nombre != "" && this.state.pass != "" && this.state.url !="" && this.state.pass.length >= 7 && this.state.confirm ? <input type="submit" value="Guardar Usuario"/> : <input type="submit" value="Guardar Usuario" disabled/>}
+                    {this.state.cargo != "" && this.state.nombre != "" && this.state.pass != "" && this.state.url !="" && this.state.pass.length >= 7 ? <input type="submit" value="Guardar Usuario"/> : <input type="submit" value="Guardar Usuario" disabled/>}
                     <input type="reset" value="Limpiar Datos"/>
                 </div>
             </form>

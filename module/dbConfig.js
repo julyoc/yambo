@@ -1,7 +1,7 @@
 const { client, family, pedido, person, produc, subfam } = require('../models/schemas');
 const dbfunc = require('./dbFunc');
-const user = require('./config').appC.rootUser;
-const user1 = require('./config').appC.no_rootUser;
+const user = require('../config').appC.rootUser;
+const user1 = require('../config').appC.no_rootUser;
 
 dbfunc.crearCol(client, (res) => {
      console.log(res);

@@ -6,33 +6,42 @@ const session = require('cookie-session');
 const data = require('./module/dbFunc');
 const router = require('./rout/idRout');
 const multer = require('multer');
+const shelljs = require('shelljs');
 const fs = require('fs');
 const id = require('mongodb').ObjectId;
 const decimal = require('mongodb').Decimal128;
-const appC = require('./module/config').appC;
+const appC = require('./config').appC;
+const http = require('http');
+const https = require('https');
 const app = express();
 const upload = multer({dest: 'temp/'});
-//se configura para el uso de sesiones con cookie-session
+const cert = {
+     key: fs.readFileSync('sslcert/yambo.key', 'utf8'),
+     cert: fs.readFileSync('sslcert/yambo.crt', 'utf8')
+};
 app.set('trust proxy', 1);
 app.use(session({
      name: 'session',
      keys: ['laguna', 'yambo']
 }));
-//configuracion de rutas
 app.use('/', router);
-//se aniade el motor de vistas al framework express.js
 app.engine('ejs', engine);
-app.set('views', path.join(__dirname, '/views'));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-//se configura la informacion q se recive del cliente
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-// se declaran las carpetas estaticas q tengra acseso el navegador
-app.use('/assets', express.static(path.join(__dirname, '/assets')));
-app.use('/public', express.static(path.join(__dirname, '/public')));
-app.use('/lib/react', express.static(path.join(__dirname, '/node_modules/react/umd')));
-app.use('/lib/bootstrap', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/css')));
-app.use('/lib/react-dom', express.static(path.join(__dirname, '/node_modules/react-dom/umd')));
+app.use('/assets', express.static('assets/'));
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/lib/react', express.static(path.join(__dirname, 'node_modules/react/umd')));
+app.use('/lib/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
+app.use('/lib/react-dom', express.static(path.join(__dirname, 'node_modules/react-dom/umd')));
+
+var estado = shelljs.exec('fuser -n tcp 4000');
+if (estado) {
+     est = estado.split(' ');
+     l = est.length - 1;
+     shelljs.exec('kill -9 ' + est[l]);
+}
 
 app.get('/', (req, res) => {
     console.log(req.headers.host);
@@ -236,17 +245,11 @@ app.post('/addUser', (req, res) => {
           root: req.body.root ? true : false,
           puesto: req.body.cargo
      }
-     console.log(user);
-     res.redirect('/'+req.session.user.url);
+     data.insert('personal', user, doc => {
+          console.log(user);
+          res.redirect('/'+req.session.user.url);
+     });
 });
-
-
-const http = require('http');
-const https = require('https');
-const cert = {
-     key: fs.readFileSync('sslcert/yambo.key', 'utf8'),
-     cert: fs.readFileSync('sslcert/yambo.crt', 'utf8')
-};
 
 var httpService = http.createServer(app);
 var httpsService = https.createServer(cert, app);

@@ -158,7 +158,7 @@ var AddUser = function (_React$Component) {
                 React.createElement(
                     "div",
                     null,
-                    this.state.cargo != "" && this.state.nombre != "" && this.state.pass != "" && this.state.url != "" && this.state.pass.length >= 7 && this.state.confirm ? React.createElement("input", { type: "submit", value: "Guardar Usuario" }) : React.createElement("input", { type: "submit", value: "Guardar Usuario", disabled: true }),
+                    this.state.cargo != "" && this.state.nombre != "" && this.state.pass != "" && this.state.url != "" && this.state.pass.length >= 7 ? React.createElement("input", { type: "submit", value: "Guardar Usuario" }) : React.createElement("input", { type: "submit", value: "Guardar Usuario", disabled: true }),
                     React.createElement("input", { type: "reset", value: "Limpiar Datos" })
                 )
             );

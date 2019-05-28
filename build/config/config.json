@@ -1,0 +1,27 @@
+{
+     "ip_v4": "127.0.0.1",
+     "ip_v6": null,
+     "port": 4000,
+     "ports": 4040,
+     "db": {
+          "name": "yambo",
+          "user": "julioEdit",
+          "pass": "Julio1998",
+          "ip": "localhost",
+          "port": 27017
+     },
+     "rootUser": {
+          "nombre": "root",
+          "url": "rootUser",
+          "contrasenia": "yambo@root",
+          "root": true,
+          "puesto": "administrador(Software-dev)"
+     },
+     "no_rootUser": {
+          "nombre": "no_root",
+          "url": "no_rootUser",
+          "contrasenia": "yambouser",
+          "root": false,
+          "puesto": "mecero"
+     }
+}

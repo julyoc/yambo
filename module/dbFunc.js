@@ -1,8 +1,8 @@
 const Mongodb = require('mongodb').MongoClient;
 const id = require('mongodb').ObjectId;
 const dbc = {
-     "url": require('./config').dburl,
-     'db': require('./config').dbname
+     "url": require('../config').dburl,
+     'db': require('../config').dbname
 };
 
 var data = {
