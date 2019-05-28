@@ -74,5 +74,15 @@ assets/producto/*.jpg
 assets/producto/*.jpeg
 assets/producto/*.gif
 
-# Ignora carpeta temporal
-temp/
+build/assets/family/*.png
+build/assets/family/*.jpg
+build/assets/family/*.jpeg
+build/assets/family/*.gif
+build/assets/subfamily/*.png
+build/assets/subfamily/*.jpg
+build/assets/subfamily/*.jpeg
+build/assets/subfamily/*.gif
+build/assets/producto/*.png
+build/assets/producto/*.jpg
+build/assets/producto/*.jpeg
+build/assets/producto/*.gif
