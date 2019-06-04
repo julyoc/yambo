@@ -121,9 +121,55 @@ router.route('/:id/admin/nuevo-pedido').get((req, res) => {
                                    "family": JSON.stringify(fam),
                                    "subfam": JSON.stringify(subfam),
                                    "produc": JSON.stringify(prod),
-                                   "client": JSON.stringify(cli)});
+                                   "client": JSON.stringify(cli)
+                              });
                          });
                     });
+               });
+          });
+     } else {
+          res.redirect('/');
+     }
+});
+
+router.route('/:id/admin/editFam').get((req, res) => {
+     if (req.session.user) {
+          data.findAll('family', (doc) => {
+               res.render('rootDir/adminDir/edit', {
+                    "config":req.session.user.root,
+                    "name": req.session.user.nombre,
+                    "url": req.session.user.url,
+                    "doc": JSON.stringify(doc)
+               });
+          });
+     } else {
+          res.redirect('/');
+     }
+});
+
+router.route('/:id/admin/editSubFam').get((req, res) => {
+     if (req.session.user) {
+          data.findAll('subfamily', (doc) => {
+               res.render('rootDir/adminDir/edit', {
+                    "config":req.session.user.root,
+                    "name": req.session.user.nombre,
+                    "url": req.session.user.url,
+                    "doc": JSON.stringify(doc)
+               });
+          });
+     } else {
+          res.redirect('/');
+     }
+});
+
+router.route('/:id/admin/editPlato').get((req, res) => {
+     if (req.session.user) {
+          data.findAll('producto', (doc) => {
+               res.render('rootDir/adminDir/edit', {
+                    "config":req.session.user.root,
+                    "name": req.session.user.nombre,
+                    "url": req.session.user.url,
+                    "doc": JSON.stringify(doc)
                });
           });
      } else {

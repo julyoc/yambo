@@ -57,6 +57,33 @@ class Adm extends React.Component {
           console.log(url);
      }
 
+     editFam (event) {
+          /**
+           * @type {string}
+           */
+          var url = window.location +"/editFam";
+          window.location.replace(url);
+          console.log(url);
+     }
+
+     editSubFam (event) {
+          /**
+           * @type {string}
+           */
+          var url = window.location +"/editSubFam";
+          window.location.replace(url);
+          console.log(url);
+     }
+
+     editPlato (event) {
+          /**
+           * @type {string}
+           */
+          var url = window.location +"/editPlato";
+          window.location.replace(url);
+          console.log(url);
+     }
+
      render () {
           const styles = {
                "backgroundColor": "rgb(6, 23, 10)",
@@ -78,24 +105,33 @@ class Adm extends React.Component {
                "width": "3em",
                "display": "table-cell"
           }
-          var rootpar = [];
-          if(this.state.root){
-               rootpar.push((
-                    <div key={1}>
+          var rootpar = (
+               <div key={1}>
                     <div style={styles} onClick={this.famfunc}>
                          <p>Agregar Nueva Familia</p>
                     </div>
                     <div style={dv}></div>
                     <div style={styles} onClick={this.subf}>
-                    <p>Agregar Nueva Sub-familia</p>
+                         <p>Agregar Nueva Sub-familia</p>
                     </div>
                     <div style={dv}></div>
                     <div style={styles} onClick={this.platofunc}>
-                         <p>Agragar Nuevo plato</p>
+                         <p>Agragar Nuevo Plato</p>
                     </div>
+                    <br/>
+                    <div style={styles} onClick={(event => this.editFam(event)).bind(this)}>
+                         <p>Editar <br/> Familia</p>
                     </div>
-               ));
-          }
+                    <div style={dv}></div>
+                    <div style={styles} onClick={(event => this.editSubFam(event)).bind(this)}>
+                         <p>Editar <br/> Sub-familia</p>
+                    </div>
+                    <div style={dv}></div>
+                    <div style={styles} onClick={(event => this.editPlato(event)).bind(this)}>
+                         <p>Editar <br/> Plato</p>
+                    </div>
+               </div>
+          );
           var elem = (
                <div style={s1}>
                     <div style={styles} onClick={this.clifunc}>
@@ -106,7 +142,7 @@ class Adm extends React.Component {
                          <p>Agregar Nuevo Pedido</p>
                     </div>
                     <br/>
-                    {rootpar}
+                    {this.state.root ? rootpar: null}
                </div>
           );
           return elem;

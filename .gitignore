@@ -86,3 +86,7 @@ build/assets/producto/*.png
 build/assets/producto/*.jpg
 build/assets/producto/*.jpeg
 build/assets/producto/*.gif
+
+# ejecutables 
+build/yambo-linux
+build/yambo-win.exe

@@ -77,8 +77,40 @@ var Adm = function (_React$Component) {
                console.log(url);
           }
      }, {
+          key: "editFam",
+          value: function editFam(event) {
+               /**
+                * @type {string}
+                */
+               var url = window.location + "/editFam";
+               window.location.replace(url);
+               console.log(url);
+          }
+     }, {
+          key: "editSubFam",
+          value: function editSubFam(event) {
+               /**
+                * @type {string}
+                */
+               var url = window.location + "/editSubFam";
+               window.location.replace(url);
+               console.log(url);
+          }
+     }, {
+          key: "editPlato",
+          value: function editPlato(event) {
+               /**
+                * @type {string}
+                */
+               var url = window.location + "/editPlato";
+               window.location.replace(url);
+               console.log(url);
+          }
+     }, {
           key: "render",
           value: function render() {
+               var _this2 = this;
+
                var styles = {
                     "backgroundColor": "rgb(6, 23, 10)",
                     "width": "120px",
@@ -99,42 +131,81 @@ var Adm = function (_React$Component) {
                     "width": "3em",
                     "display": "table-cell"
                };
-               var rootpar = [];
-               if (this.state.root) {
-                    rootpar.push(React.createElement(
+               var rootpar = React.createElement(
+                    "div",
+                    { key: 1 },
+                    React.createElement(
                          "div",
-                         { key: 1 },
+                         { style: styles, onClick: this.famfunc },
                          React.createElement(
-                              "div",
-                              { style: styles, onClick: this.famfunc },
-                              React.createElement(
-                                   "p",
-                                   null,
-                                   "Agregar Nueva Familia"
-                              )
-                         ),
-                         React.createElement("div", { style: dv }),
-                         React.createElement(
-                              "div",
-                              { style: styles, onClick: this.subf },
-                              React.createElement(
-                                   "p",
-                                   null,
-                                   "Agregar Nueva Sub-familia"
-                              )
-                         ),
-                         React.createElement("div", { style: dv }),
-                         React.createElement(
-                              "div",
-                              { style: styles, onClick: this.platofunc },
-                              React.createElement(
-                                   "p",
-                                   null,
-                                   "Agragar Nuevo plato"
-                              )
+                              "p",
+                              null,
+                              "Agregar Nueva Familia"
                          )
-                    ));
-               }
+                    ),
+                    React.createElement("div", { style: dv }),
+                    React.createElement(
+                         "div",
+                         { style: styles, onClick: this.subf },
+                         React.createElement(
+                              "p",
+                              null,
+                              "Agregar Nueva Sub-familia"
+                         )
+                    ),
+                    React.createElement("div", { style: dv }),
+                    React.createElement(
+                         "div",
+                         { style: styles, onClick: this.platofunc },
+                         React.createElement(
+                              "p",
+                              null,
+                              "Agragar Nuevo Plato"
+                         )
+                    ),
+                    React.createElement("br", null),
+                    React.createElement(
+                         "div",
+                         { style: styles, onClick: function (event) {
+                                   return _this2.editFam(event);
+                              }.bind(this) },
+                         React.createElement(
+                              "p",
+                              null,
+                              "Editar ",
+                              React.createElement("br", null),
+                              " Familia"
+                         )
+                    ),
+                    React.createElement("div", { style: dv }),
+                    React.createElement(
+                         "div",
+                         { style: styles, onClick: function (event) {
+                                   return _this2.editSubFam(event);
+                              }.bind(this) },
+                         React.createElement(
+                              "p",
+                              null,
+                              "Editar ",
+                              React.createElement("br", null),
+                              " Sub-familia"
+                         )
+                    ),
+                    React.createElement("div", { style: dv }),
+                    React.createElement(
+                         "div",
+                         { style: styles, onClick: function (event) {
+                                   return _this2.editPlato(event);
+                              }.bind(this) },
+                         React.createElement(
+                              "p",
+                              null,
+                              "Editar ",
+                              React.createElement("br", null),
+                              " Plato"
+                         )
+                    )
+               );
                var elem = React.createElement(
                     "div",
                     { style: s1 },
@@ -158,7 +229,7 @@ var Adm = function (_React$Component) {
                          )
                     ),
                     React.createElement("br", null),
-                    rootpar
+                    this.state.root ? rootpar : null
                );
                return elem;
           }
