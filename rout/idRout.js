@@ -147,6 +147,27 @@ router.route('/:id/admin/editFam').get((req, res) => {
      }
 });
 
+router.route('/:id/admin/editFam/:doc').get((req, res) => {
+     if (req.session.user) {
+          /**
+           * 
+           * @type {string} 
+           */
+          var param = req.params.doc;
+          console.log(param);
+          data.findOneDoc('family',{_id: id(param)}, doc => {
+               res.render('rootDir/adminDir/editDir/fam', {
+                    "config":req.session.user.root,
+                    "name": req.session.user.nombre,
+                    "url": req.session.user.url,
+                    "doc": JSON.stringify(doc)
+               });
+          });
+     } else {
+          res.redirect('/');
+     }
+});
+
 router.route('/:id/admin/editSubFam').get((req, res) => {
      if (req.session.user) {
           data.findAll('subfamily', (doc) => {
@@ -162,10 +183,53 @@ router.route('/:id/admin/editSubFam').get((req, res) => {
      }
 });
 
+router.route('/:id/admin/editSubFam/:doc').get((req, res) => {
+     if (req.session.user) {
+          /**
+           * 
+           * @type {string} 
+           */
+          var param = req.params.doc;
+          console.log(param);
+          data.findOneDoc('subfamily',{_id: id(param)}, doc => {
+               res.render('rootDir/adminDir/editDir/sub_fam', {
+                    "config":req.session.user.root,
+                    "name": req.session.user.nombre,
+                    "url": req.session.user.url,
+                    "doc": JSON.stringify(doc)
+               });
+          });
+     } else {
+          res.redirect('/');
+     }
+});
+
 router.route('/:id/admin/editPlato').get((req, res) => {
      if (req.session.user) {
           data.findAll('producto', (doc) => {
                res.render('rootDir/adminDir/edit', {
+                    "config":req.session.user.root,
+                    "name": req.session.user.nombre,
+                    "url": req.session.user.url,
+                    "doc": JSON.stringify(doc)
+               });
+          });
+     } else {
+          res.redirect('/');
+     }
+});
+
+router.route('/:id/admin/editPlato/:doc').get((req, res) => {
+     if (req.session.user) {
+          /**
+           * 
+           * @type {string} 
+           */
+          var param = req.params.doc;
+          console.log(param);
+          data.findOneDoc('producto',{_id: id(param)}, doc => {
+               doc.precio.precio = doc.precio.precio.toString();
+               res.render('rootDir/adminDir/editDir/produc', {
                     "config":req.session.user.root,
                     "name": req.session.user.nombre,
                     "url": req.session.user.url,

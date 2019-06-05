@@ -251,6 +251,85 @@ app.post('/addUser', (req, res) => {
      });
 });
 
+app.post('/modFam', upload.single('image'), (req, res) => {
+     console.log(req.body);
+     if (!req.file) {
+          var ed = {
+               nombre: req.body.nombre,
+               descripcion: req.body.descripcion
+          }
+          data.update('family', {_id: id(req.body.id)}, ed, resul => {
+               res.redirect('/'+req.session.user.url);
+          });
+     } else {
+          var ed = {
+               nombre: req.body.nombre,
+               descripcion: req.body.descripcion,
+               imagen: "assets/family/"+req.file.originalname
+          }
+          fs.copyFile(req.file.path, ed.imagen, err => {
+               if (err) throw err;
+               fs.unlink(req.file.path, (err) => {
+                    if (err) throw err;
+                    data.update('family', {_id: id(req.body.id)}, ed, resul => {
+                         res.redirect('/'+req.session.user.url);
+                    });
+               });
+          });
+     }
+});
+
+app.post('/elimFam', (req, res) => {
+     data.deleteSome('subfamily', {familyid: id(req.body.id)}, resul => {
+          console.log(resul);
+          data.deleteSome('producto', {familyid: id(req.body.id)}, resul => {
+               console.log(resul);
+               data.deleteSome('family', {_id: id(req.body.id)}, resul => {
+                    console.log(resul);
+                    res.redirect('/'+req.session.user.url);
+               });
+          });
+     });
+});
+
+app.post('/modSubFam', upload.single('image'), (req, res) => {
+     console.log(req.body);
+     if (!req.file) {
+          var ed = {
+               nombre: req.body.nombre,
+               descripcion: req.body.descripcion
+          }
+          data.update('subfamily', {_id: id(req.body.id)}, ed, resul => {
+               res.redirect('/'+req.session.user.url);
+          });
+     } else {
+          var ed = {
+               nombre: req.body.nombre,
+               descripcion: req.body.descripcion,
+               imagen: "assets/subfamily/"+req.file.originalname
+          }
+          fs.copyFile(req.file.path, ed.imagen, err => {
+               if (err) throw err;
+               fs.unlink(req.file.path, (err) => {
+                    if (err) throw err;
+                    data.update('subfamily', {_id: id(req.body.id)}, ed, resul => {
+                         res.redirect('/'+req.session.user.url);
+                    });
+               });
+          });
+     }
+});
+
+app.post('/elimSubFam', (req, res) => {
+     data.deleteSome('subfamily', {familyid: id(req.body.id)}, resul => {
+          console.log(resul);
+          data.deleteSome('producto', {familyid: id(req.body.id)}, resul => {
+               console.log(resul);
+               res.redirect('/'+req.session.user.url);
+          });
+     });
+});
+
 var httpService = http.createServer(app);
 var httpsService = https.createServer(cert, app);
 

@@ -2,6 +2,10 @@
 
 aplicacion web desarrollada por quantumJsoft
 
+correr aplicacion en produccion 
+```
+npm test
+```
 
 para configurar la base de datos modificar el archivo dbConfig.js
 y para ejecutarlo
@@ -31,3 +35,9 @@ ver recursos consumidos
 ```
      ps aux
 ```
+
+Se debe tener instalado python para empaquetar
+```
+     ./build.py
+```
+para ejecutar la aplicacion empaquetar y copiar toda la carpeta /build
