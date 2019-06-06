@@ -53,8 +53,6 @@ var Menu = function (_React$Component) {
            * @type {string}
            */
           _this.tempId = "";
-          _this.ensal = [];
-          _this.papas = [];
           _this.csm = React.createRef();
           return _this;
      }
@@ -141,42 +139,6 @@ var Menu = function (_React$Component) {
            */
 
      }, {
-          key: "papasHielo",
-          value: function papasHielo(event, i) {
-               console.log(i);
-               console.log(this.ensal);
-               console.log(this.papas);
-               if (this.papas[i].current.innerText === "Papas Cocinadas/Sin Hielo") {
-                    this.papas[i].current.innerText = "Papas Fritas/Hielo";
-               } else {
-                    this.papas[i].current.innerText = "Papas Cocinadas/Sin Hielo";
-               }
-          }
-
-          /**
-           * 
-           * @param {Object} event 
-           */
-
-     }, {
-          key: "salAzu",
-          value: function salAzu(event, i) {
-               console.log(i);
-               console.log(this.ensal);
-               console.log(this.papas);
-               if (this.ensal[i].current.innerText === "Sin Ensalada/Sin Azucar") {
-                    this.ensal[i].current.innerText = "Ensalada/Azucar";
-               } else {
-                    this.ensal[i].current.innerText = "Sin Ensalada/Sin Azucar";
-               }
-          }
-
-          /**
-           * 
-           * @param {Object} event 
-           */
-
-     }, {
           key: "ovc",
           value: function ovc(event, i) {
                var tmp = [];
@@ -196,7 +158,7 @@ var Menu = function (_React$Component) {
           value: function guardarPlato(event, i) {
                this.consumo.push({
                     plato: this.tempId,
-                    observaciones: this.ensal[i].current.innerText + "  \n  " + this.papas[i].current.innerText + "  \n  " + this.option[i].current.value
+                    observaciones: this.option[i].current.value
                });
                this.setState({
                     consumo: this.consumo,
@@ -240,8 +202,6 @@ var Menu = function (_React$Component) {
                     return doc.familyid === event.target.value;
                });
                for (var i = 0; i < pr.length; i++) {
-                    this.ensal.push(React.createRef());
-                    this.papas.push(React.createRef());
                     this.option.push(React.createRef());
                }
                this.setState({
@@ -266,8 +226,6 @@ var Menu = function (_React$Component) {
                var std = this.props.subfam.filter(function (doc) {
                     return doc.familyid === event.target.value;
                });
-               this.ensal = [];
-               this.papas = [];
                this.option = [];
                if (std[0]) {
                     this.setState({
@@ -285,8 +243,6 @@ var Menu = function (_React$Component) {
                          return doc.familyid === event.target.value;
                     });
                     for (var i = 0; i < pr.length; i++) {
-                         this.ensal.push(React.createRef());
-                         this.papas.push(React.createRef());
                          this.option.push(React.createRef());
                     }
                     this.setState({
@@ -318,28 +274,6 @@ var Menu = function (_React$Component) {
                          React.createElement(
                               "div",
                               null,
-                              React.createElement(
-                                   "div",
-                                   { onClick: function (event) {
-                                             return _this3.salAzu(event, i);
-                                        }.bind(_this3) },
-                                   React.createElement(
-                                        "p",
-                                        { ref: _this3.ensal[i] },
-                                        "Ensalada/Azucar"
-                                   )
-                              ),
-                              React.createElement(
-                                   "div",
-                                   { onClick: function (event) {
-                                             return _this3.papasHielo(event, i);
-                                        }.bind(_this3) },
-                                   React.createElement(
-                                        "p",
-                                        { ref: _this3.papas[i] },
-                                        "Papas Fritas/Hielo"
-                                   )
-                              ),
                               React.createElement(
                                    "div",
                                    null,

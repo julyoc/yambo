@@ -92,8 +92,6 @@ class PedidoList extends React.Component {
                 <form action="/fn" method="post">
                     <input type="button" onClick={((event) => this.mod(this, i)).bind(this)} value="Entrar"/><br/>
                     <input type="text" name="cancel"  style={{"display": "none"}} value={JSON.stringify({can:true, di:this.props.ped[i]._id})} readOnly/>
-                    <input type="radio" id="imp" name="imp" value={this.state.imp} onClick={(event => this.rad(event)).bind(this)}/>
-                    <label htmlFor="imp">Comp</label>
                     <input type="submit" value="Finalizar"/>
                 </form>
             );

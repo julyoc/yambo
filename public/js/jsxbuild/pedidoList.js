@@ -122,14 +122,6 @@ var PedidoList = function (_React$Component) {
                         }.bind(_this2), value: "Entrar" }),
                     React.createElement("br", null),
                     React.createElement("input", { type: "text", name: "cancel", style: { "display": "none" }, value: JSON.stringify({ can: true, di: _this2.props.ped[i]._id }), readOnly: true }),
-                    React.createElement("input", { type: "radio", id: "imp", name: "imp", value: _this2.state.imp, onClick: function (event) {
-                            return _this2.rad(event);
-                        }.bind(_this2) }),
-                    React.createElement(
-                        "label",
-                        { htmlFor: "imp" },
-                        "Comp"
-                    ),
                     React.createElement("input", { type: "submit", value: "Finalizar" })
                 );
             };

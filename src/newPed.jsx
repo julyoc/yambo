@@ -157,8 +157,6 @@ class Pedido extends React.Component {
            * @type {string}
            */
           this.tempId = "";
-          this.ensal = [];
-          this.papas = [];
           this.csm = React.createRef();
      }
 
@@ -227,36 +225,6 @@ class Pedido extends React.Component {
       * 
       * @param {Object} event 
       */
-     papasHielo (event, i) {
-          console.log(i);
-          console.log(this.ensal);
-          console.log(this.papas);
-          if (this.papas[i].current.innerText === "Papas Cocinadas/Sin Hielo") {
-               this.papas[i].current.innerText = "Papas Fritas/Hielo";
-          } else {
-               this.papas[i].current.innerText = "Papas Cocinadas/Sin Hielo";
-          }
-     }
-
-     /**
-      * 
-      * @param {Object} event 
-      */
-     salAzu (event, i) {
-          console.log(i);
-          console.log(this.ensal);
-          console.log(this.papas);
-          if (this.ensal[i].current.innerText === "Sin Ensalada/Sin Azucar") {
-               this.ensal[i].current.innerText = "Ensalada/Azucar";
-          } else {
-               this.ensal[i].current.innerText = "Sin Ensalada/Sin Azucar";
-          }
-     }
-
-     /**
-      * 
-      * @param {Object} event 
-      */
      ovc (event, i) {
           let tmp = [];
           tmp[i] = this.option[i].current.value;
@@ -272,7 +240,7 @@ class Pedido extends React.Component {
      guardarPlato (event, i) {
           this.consumo.push({
                plato: this.tempId,
-               observaciones: this.ensal[i].current.innerText + "  \n  " + this.papas[i].current.innerText + "  \n  " + this.option[i].current.value
+               observaciones: this.option[i].current.value
           });
           this.setState({
                consumo: this.consumo,
@@ -310,8 +278,6 @@ class Pedido extends React.Component {
                return doc.familyid === event.target.value;
           });
           for (let i = 0; i < pr.length; i++) {
-               this.ensal.push(React.createRef());
-               this.papas.push(React.createRef());
                this.option.push(React.createRef());
           }
           this.setState({
@@ -333,8 +299,6 @@ class Pedido extends React.Component {
           var std = this.props.subfam.filter((doc) => {
                return doc.familyid === event.target.value;
           });
-          this.ensal = [];
-          this.papas = [];
           this.option = [];
           if (std[0]) {
                this.setState({
@@ -352,8 +316,6 @@ class Pedido extends React.Component {
                     return doc.familyid === event.target.value;
                });
                for (let i = 0; i < pr.length; i++) {
-                    this.ensal.push(React.createRef());
-                    this.papas.push(React.createRef());
                     this.option.push(React.createRef());
                }
                this.setState({
@@ -375,8 +337,6 @@ class Pedido extends React.Component {
           var opciones = (i) => (
                <div>
                     <div>
-                         <div onClick={((event) => this.salAzu(event, i)).bind(this)}><p ref={this.ensal[i]}>{"Ensalada/Azucar"}</p></div>
-                         <div onClick={((event) => this.papasHielo(event, i)).bind(this)}><p ref={this.papas[i]}>{"Papas Fritas/Hielo"}</p></div>
                          <div><textarea ref={this.option[i]} name="" id="" cols="10" rows="2" value={this.state.observaciones[i]} onChange={((event) => this.ovc(event, i)).bind(this)}></textarea></div>
                     </div>
                     <input type="button" value="Add" onClick={((event) => this.guardarPlato(event, i)).bind(this)}/>

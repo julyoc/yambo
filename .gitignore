@@ -90,3 +90,4 @@ build/assets/producto/*.gif
 # ejecutables 
 build/yambo-linux
 build/yambo-win.exe
+build.zip

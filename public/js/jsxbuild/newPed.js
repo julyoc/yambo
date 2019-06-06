@@ -203,8 +203,6 @@ var Pedido = function (_React$Component2) {
            * @type {string}
            */
           _this2.tempId = "";
-          _this2.ensal = [];
-          _this2.papas = [];
           _this2.csm = React.createRef();
           return _this2;
      }
@@ -291,42 +289,6 @@ var Pedido = function (_React$Component2) {
            */
 
      }, {
-          key: "papasHielo",
-          value: function papasHielo(event, i) {
-               console.log(i);
-               console.log(this.ensal);
-               console.log(this.papas);
-               if (this.papas[i].current.innerText === "Papas Cocinadas/Sin Hielo") {
-                    this.papas[i].current.innerText = "Papas Fritas/Hielo";
-               } else {
-                    this.papas[i].current.innerText = "Papas Cocinadas/Sin Hielo";
-               }
-          }
-
-          /**
-           * 
-           * @param {Object} event 
-           */
-
-     }, {
-          key: "salAzu",
-          value: function salAzu(event, i) {
-               console.log(i);
-               console.log(this.ensal);
-               console.log(this.papas);
-               if (this.ensal[i].current.innerText === "Sin Ensalada/Sin Azucar") {
-                    this.ensal[i].current.innerText = "Ensalada/Azucar";
-               } else {
-                    this.ensal[i].current.innerText = "Sin Ensalada/Sin Azucar";
-               }
-          }
-
-          /**
-           * 
-           * @param {Object} event 
-           */
-
-     }, {
           key: "ovc",
           value: function ovc(event, i) {
                var tmp = [];
@@ -346,7 +308,7 @@ var Pedido = function (_React$Component2) {
           value: function guardarPlato(event, i) {
                this.consumo.push({
                     plato: this.tempId,
-                    observaciones: this.ensal[i].current.innerText + "  \n  " + this.papas[i].current.innerText + "  \n  " + this.option[i].current.value
+                    observaciones: this.option[i].current.value
                });
                this.setState({
                     consumo: this.consumo,
@@ -390,8 +352,6 @@ var Pedido = function (_React$Component2) {
                     return doc.familyid === event.target.value;
                });
                for (var i = 0; i < pr.length; i++) {
-                    this.ensal.push(React.createRef());
-                    this.papas.push(React.createRef());
                     this.option.push(React.createRef());
                }
                this.setState({
@@ -416,8 +376,6 @@ var Pedido = function (_React$Component2) {
                var std = this.props.subfam.filter(function (doc) {
                     return doc.familyid === event.target.value;
                });
-               this.ensal = [];
-               this.papas = [];
                this.option = [];
                if (std[0]) {
                     this.setState({
@@ -435,8 +393,6 @@ var Pedido = function (_React$Component2) {
                          return doc.familyid === event.target.value;
                     });
                     for (var i = 0; i < pr.length; i++) {
-                         this.ensal.push(React.createRef());
-                         this.papas.push(React.createRef());
                          this.option.push(React.createRef());
                     }
                     this.setState({
@@ -467,28 +423,6 @@ var Pedido = function (_React$Component2) {
                          React.createElement(
                               "div",
                               null,
-                              React.createElement(
-                                   "div",
-                                   { onClick: function (event) {
-                                             return _this4.salAzu(event, i);
-                                        }.bind(_this4) },
-                                   React.createElement(
-                                        "p",
-                                        { ref: _this4.ensal[i] },
-                                        "Ensalada/Azucar"
-                                   )
-                              ),
-                              React.createElement(
-                                   "div",
-                                   { onClick: function (event) {
-                                             return _this4.papasHielo(event, i);
-                                        }.bind(_this4) },
-                                   React.createElement(
-                                        "p",
-                                        { ref: _this4.papas[i] },
-                                        "Papas Fritas/Hielo"
-                                   )
-                              ),
                               React.createElement(
                                    "div",
                                    null,

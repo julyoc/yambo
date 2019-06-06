@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const engine = require('ejs-locals');
 const session = require('cookie-session');
 const data = require('./module/dbFunc');
+const print = require('./module/print')
 const router = require('./rout/idRout');
 const multer = require('multer');
 const shelljs = require('shelljs');
@@ -204,7 +205,46 @@ app.post('/nuevo-pedido', (req, res) => {
                }
                dc.precio = decimal.fromString(dc.precio.toString());
                console.log(dc);
+               pedidoCocina = [];
+               pedidoCli = [];
+               pedidoBar = [];
+               for (let i = 0; i < dc.consumo.length; i++) {
+                    var arr = doc.filter((vr) => {
+                         return vr._id.toString() === dc.consumo[i].plato.toString();
+                    });
+                    console.log(arr);
+                    for (let j = 0; j < arr.length; j++) {
+                         if (arr[j].lugar[0] === "ba" || arr[j].lugar[1] === "ba" || arr[j].lugar[2] === "ba") {
+                              pedidoBar.push({
+                                   plato: arr[j].nombre,
+                                   observaciones: dc.consumo[i].observaciones
+                              });
+                         }
+                         if (arr[j].lugar[0] === "pa" || arr[j].lugar[0] === "co" || arr[j].lugar[1] === "pa" || arr[j].lugar[1] === "co" || arr[j].lugar[2] === "pa" || arr[j].lugar[2] === "co") {
+                              pedidoCocina.push({
+                                   plato: arr[j].nombre,
+                                   observaciones: dc.consumo[i].observaciones
+                              });
+                         }
+                         pedidoCli.push(arr[j].nombre);
+                    }
+               }
+               console.log(pedidoCli);
+               console.log(pedidoBar);
+               console.log(pedidoCocina);
                data.insert("pedidos", dc, (resul) => {
+                    /*// impresora bar
+                    print.printCli(0x00, 0x00, dc.fecha, req.session.user.nombre, dc.mesa, pedidocli, dc.precio.toString());
+                    if (pedidoBar[0]) {
+                         print.print(0x00, 0x00, dc.fecha, req.session.user.nombre, dc.mesa, pedidoBar);
+                    }
+                    if (pedidoCocina[0]) {
+                         //impresora Cocina
+                         print.print(0x01, 0x01, dc.fecha, req.session.user.nombre, dc.mesa, pedidoCocina);
+                         //impresora Cocina 2
+                         print.print(0x02, 0x02, dc.fecha, req.session.user.nombre, dc.mesa, pedidoCocina);
+                    }*/
+                    console.log('recivos impresos');
                     res.redirect('/'+req.session.user.url);
                });
           });
