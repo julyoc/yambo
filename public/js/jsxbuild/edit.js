@@ -15,6 +15,10 @@ var Edit = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Edit.__proto__ || Object.getPrototypeOf(Edit)).call(this, props));
 
         _this.obj = [];
+        _this.state = {
+            data: props.data,
+            ord: false
+        };
         return _this;
     }
 
@@ -38,6 +42,43 @@ var Edit = function (_React$Component) {
             var url = window.location + "/" + fn._id;
             window.location.replace(url);
             console.log(url);
+        }
+    }, {
+        key: "ordenar",
+        value: function ordenar(event) {
+            if (!this.state.ord) {
+                this.props.data.sort(function (a, b) {
+                    if (a.nombre > b.nombre) {
+                        return 1;
+                    }
+                    if (a.nombre < b.nombre) {
+                        return -1;
+                    }
+                    return 0;
+                });
+                this.setState({
+                    data: this.props.data
+                });
+                this.setState({
+                    ord: true
+                });
+            } else {
+                this.props.data.sort(function (a, b) {
+                    if (a.nombre < b.nombre) {
+                        return 1;
+                    }
+                    if (a.nombre > b.nombre) {
+                        return -1;
+                    }
+                    return 0;
+                });
+                this.setState({
+                    data: this.props.data
+                });
+                this.setState({
+                    ord: false
+                });
+            }
         }
     }, {
         key: "render",
@@ -82,7 +123,7 @@ var Edit = function (_React$Component) {
             };var filas = [];
 
             var _loop = function _loop(i) {
-                if (_this3.props.data.hasOwnProperty(i)) {
+                if (_this3.state.data.hasOwnProperty(i)) {
                     _this3.obj.push(React.createRef());
                     filas.push(React.createElement(
                         "tr",
@@ -92,13 +133,13 @@ var Edit = function (_React$Component) {
                             { ref: _this3.obj[i], style: styles, onClick: function (event) {
                                     return _this3.edit(event, i);
                                 }.bind(_this3) },
-                            _this3.props.data[i].nombre
+                            _this3.state.data[i].nombre
                         )
                     ));
                 }
             };
 
-            for (var i in this.props.data) {
+            for (var i in this.state.data) {
                 _loop(i);
             }
 
@@ -120,7 +161,9 @@ var Edit = function (_React$Component) {
                             null,
                             React.createElement(
                                 "th",
-                                { style: styles },
+                                { style: styles, onClick: function (event) {
+                                        return _this3.ordenar(event);
+                                    }.bind(this) },
                                 "Nombre:"
                             )
                         )

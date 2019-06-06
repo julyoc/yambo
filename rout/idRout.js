@@ -227,13 +227,19 @@ router.route('/:id/admin/editPlato/:doc').get((req, res) => {
            */
           var param = req.params.doc;
           console.log(param);
-          data.findOneDoc('producto',{_id: id(param)}, doc => {
-               doc.precio.precio = doc.precio.precio.toString();
-               res.render('rootDir/adminDir/editDir/produc', {
-                    "config":req.session.user.root,
-                    "name": req.session.user.nombre,
-                    "url": req.session.user.url,
-                    "doc": JSON.stringify(doc)
+          data.findAll('family', fam => {
+               data.findAll('subfamily', sfam => {
+                    data.findOneDoc('producto',{_id: id(param)}, doc => {
+                         doc.precio.precio = doc.precio.precio.toString();
+                         res.render('rootDir/adminDir/editDir/produc', {
+                              "config":req.session.user.root,
+                              "name": req.session.user.nombre,
+                              "url": req.session.user.url,
+                              "doc": JSON.stringify(doc),
+                              "fam": JSON.stringify(fam),
+                              "sfam": JSON.stringify(sfam)
+                         });
+                    });
                });
           });
      } else {

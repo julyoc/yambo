@@ -48,11 +48,13 @@ app.get('/', (req, res) => {
     if (req.headers.host === appC.ip_v4+":"+appC.port) {
         res.redirect("https://"+appC.ip_v4+":"+appC.ports);
     }
+    if (req.session.user) {
+     res.redirect('/'+req.session.user.url)
+    }
     res.render('index', {name: 'log-in'});
 });
 
 app.post('/val', (req, res) => {
-     //console.log(req.body);
      data.findOneDoc('personal', {"nombre":req.body.user, "contrasenia":req.body.pwrd}, (resul) => {
           if(resul === null){
                res.redirect('/');
@@ -327,6 +329,55 @@ app.post('/elimSubFam', (req, res) => {
                console.log(resul);
                res.redirect('/'+req.session.user.url);
           });
+     });
+});
+
+app.post('/editProd', upload.single('image'), (req,res) => {
+     console.log(req.body.iva);
+     if (!req.file) {
+          var ed = {
+               nombre: req.body.nombre,
+               familyid: id(req.body.familyid),
+               precio: {
+                    iva: data.boolTrans(req.body.iva),
+                    precio: decimal.fromString(req.body.precio)
+               },
+               descripcion: req.body.descripcion
+          }
+          console.log(ed);
+          data.update('producto', {_id: id(req.body.id)}, ed, resul => {
+               console.log(resul);
+               res.redirect('/'+req.session.user.url);
+          });
+     } else {
+          var ed = {
+               nombre: req.body.nombre,
+               familyid: id(req.body.familyid),
+               precio: {
+                    iva: data.boolTrans(req.body.iva),
+                    precio: decimal.fromString(req.body.precio)
+               },
+               imagen: "assets/family/"+req.file.originalname,
+               descripcion: req.body.descripcion
+          }
+          console.log(ed);
+          fs.copyFile(req.file.path, ed.imagen, err => {
+               if (err) throw err;
+               fs.unlink(req.file.path, (err) => {
+                    if (err) throw err;
+                    data.update('producto', {_id: id(req.body.id)}, ed, resul => {
+                         console.log(resul);
+                         res.redirect('/'+req.session.user.url);
+                    });
+               });
+          });
+     }
+});
+
+app.post('/elimProd', (req, res) => {
+     data.delete('producto', {_id: id(req.body.id)}, resul => {
+          console.log(resul);
+          res.redirect('/'+req.session.user.url);
      });
 });
 

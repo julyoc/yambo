@@ -3,6 +3,10 @@ class Edit extends React.Component {
     constructor (props) { 
         super(props);
         this.obj = [];
+        this.state ={
+            data: props.data,
+            ord: false
+        }
     }
 
     edit (event, i) {
@@ -22,6 +26,44 @@ class Edit extends React.Component {
         window.location.replace(url);
         console.log(url);
     }
+
+    ordenar (event) {
+        if (!this.state.ord) {
+            this.props.data.sort((a, b) => {
+                if (a.nombre > b.nombre) {
+                     return 1;
+                }
+                if (a.nombre < b.nombre) {
+                     return -1;
+                }
+                return 0;
+            });
+            this.setState({
+                data: this.props.data
+            });
+            this.setState({
+                ord: true
+            });
+        } else {
+            this.props.data.sort((a, b) => {
+                if (a.nombre < b.nombre) {
+                     return 1;
+                }
+                if (a.nombre > b.nombre) {
+                     return -1;
+                }
+                return 0;
+            });
+            this.setState({
+                data: this.props.data
+            });
+            this.setState({
+                ord: false
+            });
+        }
+    }
+
+
 
     render() {
 
@@ -65,12 +107,12 @@ class Edit extends React.Component {
          */
         var filas = [];
 
-        for (const i in this.props.data) {
-            if (this.props.data.hasOwnProperty(i)) {
+        for (const i in this.state.data) {
+            if (this.state.data.hasOwnProperty(i)) {
                 this.obj.push(React.createRef());
                 filas.push((
                     <tr key={i.toString()}>
-                        <td ref={this.obj[i]} style={styles} onClick={(event => this.edit(event, i)).bind(this)}>{this.props.data[i].nombre}</td>
+                        <td ref={this.obj[i]} style={styles} onClick={(event => this.edit(event, i)).bind(this)}>{this.state.data[i].nombre}</td>
                     </tr>
                 ));
             }
@@ -85,7 +127,7 @@ class Edit extends React.Component {
                 <table style={styleT}>
                     <thead>
                         <tr>
-                            <th style={styles}>Nombre:</th>
+                            <th style={styles} onClick={(event => this.ordenar(event)).bind(this)}>Nombre:</th>
                         </tr>
                     </thead>
                     <tbody>

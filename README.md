@@ -41,3 +41,8 @@ Se debe tener instalado python para empaquetar
      ./build.py
 ```
 para ejecutar la aplicacion empaquetar y copiar toda la carpeta /build
+
+para ver tamanio de archivos 
+```
+du -a -h
+```
