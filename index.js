@@ -226,24 +226,30 @@ app.post('/nuevo-pedido', (req, res) => {
                                    observaciones: dc.consumo[i].observaciones
                               });
                          }
-                         pedidoCli.push(arr[j].nombre);
+                         console.log("jkdshgjsdjhsdbghdsbf");
+                         console.log({nombre: arr[j].nombre, precio: arr[j].precio.precio.toString()});
+                         pedidoCli.push({nombre: arr[j].nombre, precio: arr[j].precio.precio.toString()});
                     }
                }
                console.log(pedidoCli);
                console.log(pedidoBar);
                console.log(pedidoCocina);
                data.insert("pedidos", dc, (resul) => {
-                    /*// impresora bar
-                    print.printCli(0x00, 0x00, dc.fecha, req.session.user.nombre, dc.mesa, pedidocli, dc.precio.toString());
-                    if (pedidoBar[0]) {
-                         print.print(0x00, 0x00, dc.fecha, req.session.user.nombre, dc.mesa, pedidoBar);
-                    }
-                    if (pedidoCocina[0]) {
-                         //impresora Cocina
-                         print.print(0x01, 0x01, dc.fecha, req.session.user.nombre, dc.mesa, pedidoCocina);
-                         //impresora Cocina 2
-                         print.print(0x02, 0x02, dc.fecha, req.session.user.nombre, dc.mesa, pedidoCocina);
-                    }*/
+                    // impresora bar
+                    print.printCli(0x04B8, 0x0E15, dc.fecha, req.session.user.nombre, dc.mesa, pedidoCli, dc.precio.toString());
+                    setTimeout(() => {
+                         if (pedidoBar[0]) {
+                              print.print(0x04B8, 0x0E15, dc.fecha, req.session.user.nombre, dc.mesa, pedidoBar);
+                              setTimeout(() => {}, 1000);
+                         }
+                         setTimeout(() => {
+                              if (pedidoCocina[0]) {
+                                   //impresora Cocina
+                                   print.print(0x04B8, 0x0E15, dc.fecha, req.session.user.nombre, dc.mesa, pedidoCocina);
+                                   setTimeout(() => {}, 1000);
+                              }
+                         }, 2000);
+                    }, 2000);
                     console.log('recivos impresos');
                     res.redirect('/'+req.session.user.url);
                });
@@ -269,13 +275,37 @@ app.post("/fn", (req, res) => {
      var comprobante = req.body.imp === "true" ? true : false;
      console.log(comprobante, cancel);
      data.update("pedidos", {_id: id(cancel.di)}, {cancelado: cancel.can}, resul => {
-          if (comprobante) {
-               //imprime comprobante
-               console.log("se imprime el comprobante");
-               res.redirect('/'+req.session.user.url);
-          } else {
-               res.redirect('/'+req.session.user.url);
-          }
+          data.findOneDoc("pedidos", {_id: id(cancel.di)}, (ped) => {
+               console.log(ped.consumo);
+               data.findAll("producto", produc => {
+                    var pedido = [];
+                    produc.forEach(element => {
+                         var fl = ped.consumo.filter(dt => {
+                              return element._id.toString() === dt.plato.toString();
+                         });
+                         if (fl[0]) {
+                              pedido.push({
+                                   cantidad: fl.length.toString(),
+                                   nombre: element.nombre,
+                                   precio: (Number(element.precio.precio.toString())*fl.length).toString() 
+                              });
+                         }
+                    });
+                    data.findOneDoc("cliente", {_id: id(ped.clientid)}, cli => {
+                         var cl = {
+                              nombre: cli.nombre,
+                              RUC: cli.cedula,
+                              direccion: cli.direccion.ciudad,
+                              telefono: cli.telefono
+                         }
+                         print.printFactura(0x04B8, 0x0202, cl, pedido, ped.precio.toString());
+                         setTimeout(() => {
+                              print.printFactura(0x04B8, 0x0202, cl, pedido, ped.precio.toString());
+                         }, 2000);
+                         res.redirect('/'+req.session.user.url);
+                    });
+               });
+          });
      });
 });
 

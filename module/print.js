@@ -15,11 +15,10 @@ module.exports = {
     "print": function (vid, pid, date, mecero, mesa, pedido) {
         const device = new escpos.USB(vid, pid);
         const printer = new escpos.Printer(device);
-        srtped = "-- ";
+        var strped = "-- ";
         pedido.forEach(element => {
-            strped += element.plato + "\n-" + element.observaciones + "\n-- ";
+            strped += element.plato + "\n-" + element.observaciones + "\n\n-- ";
         });
-        console.log(srtped);
         device.open(err => {
             if (err) throw err;
             printer
@@ -38,12 +37,8 @@ module.exports = {
             .text('-------------------------')
             .text(strped)
             .text('_________________________')
-            .text('instagram: ')
-            .qrimage('https://www.instagram.com/balcondeyambo', err => {
-                if (err) throw err;
-                this.cut();
-                this.close();
-            });
+            .cut()
+            .close();
         });
     
     },
@@ -60,20 +55,21 @@ module.exports = {
     "printCli": function (vid, pid, date, mecero, mesa, pedido, total) {
         const device = new escpos.USB(vid, pid);
         const printer = new escpos.Printer(device);
-        srtped = "-- ";
-        pedido.forEach(element => {
-            strped += element + "\n-- "; 
-        });
-        console.log(srtped);
+        var strped = "-- ";
+        for (const i in pedido) {
+            if (pedido.hasOwnProperty(i)) {
+                strped = strped + pedido[i].nombre + "   $ " + pedido[i].precio + "\n-- ";
+            }
+        }
+        //console.log(srtped);
         device.open(err => {
-            if (err) throw err;
             printer
             .font('a')
             .align('ct')
             .style('bu')
             .size(1, 1)
             .text('_________________________')
-            .text('     Balcon de Yambo')
+            .text('Balcon de Yambo')
             .text('-------------------------')
             .text('Atendido por: '+mecero)
             .text('mesa: '+ mesa)
@@ -85,13 +81,60 @@ module.exports = {
             .text('total: $'+total)
             .text('_________________________')
             .text('instagram: ')
-            .qrimage('https://www.instagram.com/balcondeyambo', err => {
-                if (err) throw err;
+            .qrimage('https://www.instagram.com/balcondeyambo', function(err){
                 this.cut();
                 this.close();
             });
         });
     
     },
+    /**
+     * 
+     * @param {*} vid 
+     * @param {*} pid 
+     * @param {*} cliente 
+     * @param {Array<{nombre: string, precio: string, cantidad: string}>} pedido 
+     * @param {string} total  
+     */
+    "printFactura": function (vid, pid, cliente, pedido, total) {
+        const device = new escpos.USB(vid, pid);
+        const printer = new escpos.Printer(device);
+        var pr = "";
+        for (let i=0;i< 11; i++) {
+            if (pedido[i]) {
+                pr += pedido[i].cantidad + "  " + pedido[i].nombre + "\t $" + pedido[i].precio;
+            }
+            pr += "\n";
+        }
+        device.open(err => {
+            if (err) throw err;
+            printer
+            .font('a')
+            .align('lt')
+            .style('bu')
+            .size(1, 1)
+            .text('\n')
+            .text("Nombre: "+cliente.nombre)
+            .text("RUC: " + cliente.RUC)
+            .text("Direccion: " + cliente.direccion)
+            .text("Telefono: " + cliente.telefono)
+            .text(pr)
+            .text("________________________")
+            .text("Subtotal:  $ "+total)
+            .text("iva 0%     $ 0")
+            .text("Total:     $ "+total)
+            .text("")
+            .text("")
+            .text("")
+            .text("")
+            .text("")
+            .text("")
+            .text("")
+            .text("")
+            .text("")
+            .text("")
+            .text("")
+            .close();
+        });
+    }
 }
-
