@@ -376,18 +376,21 @@ router.route('/:id/pedidos/mod/:pedId').get((req, res) => {
                data.findAll('family', (fam) => {
                     data.findAll('subfamily', (sfam) => {
                          data.findAll('producto', (prod) => {
-                              doc.precio = doc.precio.toString();
-                              for (let i = 0; i < prod.length; i++){
-                                   prod[i].precio.precio = prod[i].precio.precio.toString();
-                              }
-                              res.render('rootDir/pedDir/mod', {
-                                   pedido: JSON.stringify(doc),
-                                   fam: JSON.stringify(fam),
-                                   sfam: JSON.stringify(sfam),
-                                   produc: JSON.stringify(prod),
-                                   url: req.session.user.url,
-                                   "config": req.session.user.root,
-                                   "name": req.session.user.nombre
+                              data.findAll('cliente', cli => {
+                                   doc.precio = doc.precio.toString();
+                                   for (let i = 0; i < prod.length; i++){
+                                        prod[i].precio.precio = prod[i].precio.precio.toString();
+                                   }
+                                   res.render('rootDir/pedDir/mod', {
+                                        pedido: JSON.stringify(doc),
+                                        fam: JSON.stringify(fam),
+                                        sfam: JSON.stringify(sfam),
+                                        produc: JSON.stringify(prod),
+                                        cli: JSON.stringify(cli),
+                                        url: req.session.user.url,
+                                        "config": req.session.user.root,
+                                        "name": req.session.user.nombre
+                                   });
                               });
                          });
                     });

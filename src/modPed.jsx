@@ -1,3 +1,85 @@
+class CiInput extends React.Component {
+     
+     /**
+      * 
+      * @param {Object} props 
+      */
+     constructor(props) {
+          super(props);
+          
+          /**
+           * 
+           * @type {*}
+           */
+          var std = this.props.cli.find((doc) => {
+               return doc._id.toString() === props.client;
+          });
+          this.state = {
+               client: this.props.cli,
+               cedula: std.cedula,
+               ptt: std
+          };
+          this.ci = this.ci.bind(this);
+          this.cli = this.cli.bind(this);
+          console.log("ingresar cedula");
+     }
+
+     /**
+      * 
+      * @param {Object} event 
+      */
+     cli (event) {
+          this.setState({
+               cedula: this.state.ptt.cedula
+          });
+     }
+
+     /**
+      * 
+      * @param {Object} event 
+      */
+     ci (event) {
+          /**
+           * 
+           * @type {*}
+           */
+          var std = this.state.client.filter((doc) => {
+               return doc.cedula.substr(0, event.target.value.length) === event.target.value;
+          });
+          if (std[0]) {
+               this.setState({
+                    cedula: event.target.value,
+                    ptt: std[0]
+               });
+          } else {
+               this.setState({
+                    cedula: event.target.value,
+                    ptt: {nombre: "No encontrado", cedula: event.target.value}
+               });
+          }
+     }
+
+     /**
+      * 
+      * @returns {Object}
+      */
+     render () {
+          /**
+           * 
+           * @type {Object}
+           */
+          var elem = (
+               <div>
+                    <label htmlFor="cedula"><strong>{"Ingrese el numero de cedula:"}</strong></label>
+                    <br/>
+                    <input type="text" name="cedula" id="cedula" pattern="[0-9]{9}-[0-9]|[0-9]{10}" value={this.state.cedula} onChange={this.ci} required/>
+                    <span onClick={this.cli}>{" "+this.state.ptt.nombre + ": "+ this.state.ptt.cedula}</span>
+               </div>
+          );
+          return elem;
+     }
+}
+
 class Menu extends React.Component {
 
     /**
@@ -443,10 +525,12 @@ class Modificar extends React.Component {
         this.state = {
             pedido: props.ped,
             produc: props.produc,
-            showMenu: false
+            showMenu: false,
+            mesa: props.ped.mesa
         }
         
         this.menu = React.createRef();
+        this.consumo = [];
     }
 
     save (event) {
@@ -456,6 +540,7 @@ class Modificar extends React.Component {
         for (const j in this.menu.current.state.consumo) {
             if (this.menu.current.state.consumo.hasOwnProperty(j)) {
                 pd.consumo.push(this.menu.current.state.consumo[j]);
+                this.consumo.push(this.menu.current.state.consumo[j]);
             }
         }
         pd.precio = 0;
@@ -492,6 +577,9 @@ class Modificar extends React.Component {
     elim (event, i) {
         var pd = this.state.pedido;
         pd.consumo.splice(i, 1);
+        if (this.props.ped.length <= i) {
+             this.consumo.splice(i-props.ped.length, 1);
+        }
         console.log(pd.consumo, i);
         pd.precio = 0;
         for (const j in pd.consumo) {
@@ -506,6 +594,16 @@ class Modificar extends React.Component {
         this.setState({
             pedido: pd
         });
+    }
+
+    /**
+     * 
+     * @param {*} event 
+     */
+    setMesa (event) {
+         this.setState({
+              mesa: event.target.value
+         });
     }
 
     /**
@@ -550,6 +648,7 @@ class Modificar extends React.Component {
         const frm = (
             <div>
                 <input type="text" name="pd" value={JSON.stringify(this.state.pedido)} style={{"display": "none"}} readOnly/>
+                <input type="text" name="consumo" value={JSON.stringify(this.consumo)} style={{"display": "none"}} readOnly/>
                 <input type="submit" value="finalizar"/>
             </div>
         );
@@ -592,6 +691,14 @@ class Modificar extends React.Component {
         var elem = (
             <div>
                 <form action="/edit" method="post">
+                     <div>
+                         <label htmlFor="mesa">Mesa #:&nbsp;</label>
+                         <input type="text" id="mesa" name="mesa" value={this.state.mesa} onChange={(event => this.setMesa(event)).bind(this)}/>
+                     </div>
+                     <div>
+                         <CiInput cli={this.props.cli} client={this.props.ped.clientid}></CiInput>
+                     </div>
+                     <br/>
                     <div style={st}>
                         <table style={styleT}>
                             <thead>
@@ -646,9 +753,15 @@ var sfam = getVars('sfam', (doc) => {return doc;});
 var produc = getVars('produc', (doc) => {return doc;});
 
 /**
+ * 
  * @type {Object}
  */
-var element = <Modificar url={url} ped={pedido} fam={fam} sfam={sfam} produc={produc}></Modificar>;
+var cli = getVars('cli', (doc) => {return doc;});
+
+/**
+ * @type {Object}
+ */
+var element = <Modificar cli={cli} url={url} ped={pedido} fam={fam} sfam={sfam} produc={produc}></Modificar>;
 
 ReactDOM.render(
     element,

@@ -236,16 +236,16 @@ app.post('/nuevo-pedido', (req, res) => {
                console.log(pedidoCocina);
                data.insert("pedidos", dc, (resul) => {
                     // impresora bar
-                    print.printCli(0x04B8, 0x0E15, dc.fecha, req.session.user.nombre, dc.mesa, pedidoCli, dc.precio.toString());
+                    //print.printCli(0x04B8, 0x0E15, dc.fecha, req.session.user.nombre, dc.mesa, pedidoCli, dc.precio.toString());
                     setTimeout(() => {
                          if (pedidoBar[0]) {
-                              print.print(0x04B8, 0x0E15, dc.fecha, req.session.user.nombre, dc.mesa, pedidoBar);
+                              //print.print(0x04B8, 0x0E15, dc.fecha, req.session.user.nombre, dc.mesa, pedidoBar);
                               setTimeout(() => {}, 1000);
                          }
                          setTimeout(() => {
                               if (pedidoCocina[0]) {
                                    //impresora Cocina
-                                   print.print(0x04B8, 0x0E15, dc.fecha, req.session.user.nombre, dc.mesa, pedidoCocina);
+                                   //print.print(0x04B8, 0x0E15, dc.fecha, req.session.user.nombre, dc.mesa, pedidoCocina);
                                    setTimeout(() => {}, 1000);
                               }
                          }, 2000);
@@ -259,14 +259,63 @@ app.post('/nuevo-pedido', (req, res) => {
 
 app.post("/edit",(req, res) => {
      var ped = JSON.parse(req.body.pd);
-     ped.precio = decimal.fromString(ped.precio.toString());
      for (const i in ped.consumo) {
           if (ped.consumo.hasOwnProperty(i)) {
                ped.consumo[i].plato = id(ped.consumo[i].plato);
           }
      }
-     data.update("pedidos", {_id: id(ped._id)}, {consumo: ped.consumo, precio: ped.precio}, resul => {
-          res.redirect('/'+req.session.user.url);
+     var consumo = JSON.parse(req.body.consumo);
+     ped.precio = decimal.fromString(ped.precio.toString());
+     var mesa = parseInt(req.body.mesa);
+     console.log(ped);
+     console.log(consumo);
+     data.findOneDoc('cliente', {cedula: req.body.cedula}, client => {
+          data.findAll('producto', doc => {
+               pedidoCocina = [];
+               pedidoCli = [];
+               pedidoBar = [];
+               for (let i = 0; i < consumo.length; i++) {
+                    var arr = doc.filter((vr) => {
+                         return vr._id.toString() === consumo[i].plato.toString();
+                    });
+                    for (let j = 0; j < arr.length; j++) {
+                         if (arr[j].lugar[0] === "ba" || arr[j].lugar[1] === "ba" || arr[j].lugar[2] === "ba") {
+                              pedidoBar.push({
+                                   plato: arr[j].nombre,
+                                   observaciones: consumo[i].observaciones
+                              });
+                         }
+                         if (arr[j].lugar[0] === "pa" || arr[j].lugar[0] === "co" || arr[j].lugar[1] === "pa" || arr[j].lugar[1] === "co" || arr[j].lugar[2] === "pa" || arr[j].lugar[2] === "co") {
+                              pedidoCocina.push({
+                                   plato: arr[j].nombre,
+                                   observaciones: consumo[i].observaciones
+                              });
+                         }
+                         pedidoCli.push({nombre: arr[j].nombre, precio: arr[j].precio.precio.toString()});
+                    }
+               }
+               console.log(pedidoCli);
+               console.log(pedidoBar);
+               console.log(pedidoCocina);
+               data.update("pedidos", {_id: id(ped._id)}, {clientid: client._id, consumo: ped.consumo, precio: ped.precio, mesa: mesa}, resul => {
+                    // impresora bar
+                    //print.printCli(0x04B8, 0x0E15, new Date(), req.session.user.nombre, req.body.mesa, pedidoCli, ped.precio.toString());
+                    setTimeout(() => {
+                         if (pedidoBar[0]) {
+                              //print.print(0x04B8, 0x0E15, new Date(), req.session.user.nombre, req.body.mesa, pedidoBar);
+                              setTimeout(() => {}, 1000);
+                         }
+                         setTimeout(() => {
+                              if (pedidoCocina[0]) {
+                                   //impresora Cocina
+                                   //print.print(0x04B8, 0x0E15, new Date(), req.session.user.nombre, req.body.mesa, pedidoCocina);
+                                   setTimeout(() => {}, 1000);
+                              }
+                         }, 2000);
+                    }, 2000);
+                    res.redirect('/'+req.session.user.url);
+               });
+          });
      });
 });
 
@@ -298,9 +347,9 @@ app.post("/fn", (req, res) => {
                               direccion: cli.direccion.ciudad,
                               telefono: cli.telefono
                          }
-                         print.printFactura(0x04B8, 0x0202, cl, pedido, ped.precio.toString());
+                         //print.printFactura(0x04B8, 0x0202, cl, pedido, ped.precio.toString());
                          setTimeout(() => {
-                              print.printFactura(0x04B8, 0x0202, cl, pedido, ped.precio.toString());
+                              //print.printFactura(0x04B8, 0x0202, cl, pedido, ped.precio.toString());
                          }, 2000);
                          res.redirect('/'+req.session.user.url);
                     });

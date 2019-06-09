@@ -6,8 +6,119 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Menu = function (_React$Component) {
-     _inherits(Menu, _React$Component);
+var CiInput = function (_React$Component) {
+     _inherits(CiInput, _React$Component);
+
+     /**
+      * 
+      * @param {Object} props 
+      */
+     function CiInput(props) {
+          _classCallCheck(this, CiInput);
+
+          /**
+           * 
+           * @type {*}
+           */
+          var _this = _possibleConstructorReturn(this, (CiInput.__proto__ || Object.getPrototypeOf(CiInput)).call(this, props));
+
+          var std = _this.props.cli.find(function (doc) {
+               return doc._id.toString() === props.client;
+          });
+          _this.state = {
+               client: _this.props.cli,
+               cedula: std.cedula,
+               ptt: std
+          };
+          _this.ci = _this.ci.bind(_this);
+          _this.cli = _this.cli.bind(_this);
+          console.log("ingresar cedula");
+          return _this;
+     }
+
+     /**
+      * 
+      * @param {Object} event 
+      */
+
+
+     _createClass(CiInput, [{
+          key: "cli",
+          value: function cli(event) {
+               this.setState({
+                    cedula: this.state.ptt.cedula
+               });
+          }
+
+          /**
+           * 
+           * @param {Object} event 
+           */
+
+     }, {
+          key: "ci",
+          value: function ci(event) {
+               /**
+                * 
+                * @type {*}
+                */
+               var std = this.state.client.filter(function (doc) {
+                    return doc.cedula.substr(0, event.target.value.length) === event.target.value;
+               });
+               if (std[0]) {
+                    this.setState({
+                         cedula: event.target.value,
+                         ptt: std[0]
+                    });
+               } else {
+                    this.setState({
+                         cedula: event.target.value,
+                         ptt: { nombre: "No encontrado", cedula: event.target.value }
+                    });
+               }
+          }
+
+          /**
+           * 
+           * @returns {Object}
+           */
+
+     }, {
+          key: "render",
+          value: function render() {
+               /**
+                * 
+                * @type {Object}
+                */
+               var elem = React.createElement(
+                    "div",
+                    null,
+                    React.createElement(
+                         "label",
+                         { htmlFor: "cedula" },
+                         React.createElement(
+                              "strong",
+                              null,
+                              "Ingrese el numero de cedula:"
+                         )
+                    ),
+                    React.createElement("br", null),
+                    React.createElement("input", { type: "text", name: "cedula", id: "cedula", pattern: "[0-9]{9}-[0-9]|[0-9]{10}", value: this.state.cedula, onChange: this.ci, required: true }),
+                    React.createElement(
+                         "span",
+                         { onClick: this.cli },
+                         " " + this.state.ptt.nombre + ": " + this.state.ptt.cedula
+                    )
+               );
+               return elem;
+          }
+     }]);
+
+     return CiInput;
+}(React.Component);
+
+var Menu = function (_React$Component2) {
+     _inherits(Menu, _React$Component2);
 
      /**
       * 
@@ -28,33 +139,33 @@ var Menu = function (_React$Component) {
              * @property {Array<string>} observaciones
              * @property {Array<{plato: string, observaciones: string}>} consumo
              */
-          var _this = _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).call(this, props));
+          var _this2 = _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).call(this, props));
 
-          _this.state = {
+          _this2.state = {
                menu: "",
                famId: "",
-               fam: _this.props.fam,
+               fam: _this2.props.fam,
                sfam: null,
                prod: null,
                opt: false,
                platos: true,
                observaciones: [],
                consumo: [],
-               allpr: _this.props.prod
+               allpr: _this2.props.prod
 
                /**
                 * 
                 * @type {Array<{plato: string, observaciones: string}>}
                 */
-          };_this.consumo = [];
+          };_this2.consumo = [];
 
           /**
            * 
            * @type {string}
            */
-          _this.tempId = "";
-          _this.csm = React.createRef();
-          return _this;
+          _this2.tempId = "";
+          _this2.csm = React.createRef();
+          return _this2;
      }
 
      /**
@@ -117,14 +228,14 @@ var Menu = function (_React$Component) {
      }, {
           key: "delete",
           value: function _delete(event) {
-               var _this2 = this;
+               var _this3 = this;
 
                /**
                 * 
                 * @type {number}
                 */
                var index = this.consumo.findIndex(function (doc) {
-                    return doc.observaciones === _this2.csm.current.innerText;
+                    return doc.observaciones === _this3.csm.current.innerText;
                });
 
                this.consumo.splice(index, 1);
@@ -261,7 +372,7 @@ var Menu = function (_React$Component) {
      }, {
           key: "render",
           value: function render() {
-               var _this3 = this;
+               var _this4 = this;
 
                /**
                   * 
@@ -277,14 +388,14 @@ var Menu = function (_React$Component) {
                               React.createElement(
                                    "div",
                                    null,
-                                   React.createElement("textarea", { ref: _this3.option[i], name: "", id: "", cols: "10", rows: "2", value: _this3.state.observaciones[i], onChange: function (event) {
-                                             return _this3.ovc(event, i);
-                                        }.bind(_this3) })
+                                   React.createElement("textarea", { ref: _this4.option[i], name: "", id: "", cols: "10", rows: "2", value: _this4.state.observaciones[i], onChange: function (event) {
+                                             return _this4.ovc(event, i);
+                                        }.bind(_this4) })
                               )
                          ),
                          React.createElement("input", { type: "button", value: "Add", onClick: function (event) {
-                                   return _this3.guardarPlato(event, i);
-                              }.bind(_this3) })
+                                   return _this4.guardarPlato(event, i);
+                              }.bind(_this4) })
                     );
                };
 
@@ -324,7 +435,7 @@ var Menu = function (_React$Component) {
                               "div",
                               { key: i, style: stl[1] },
                               React.createElement("input", { type: "checkbox", name: "fami", id: this.state.fam[i / 2].nombre, value: this.state.fam[i / 2]._id, onClick: function (event) {
-                                        return _this3.cl(event);
+                                        return _this4.cl(event);
                                    }.bind(this), style: { display: "none" } }),
                               React.createElement(
                                    "label",
@@ -376,7 +487,7 @@ var Menu = function (_React$Component) {
                               "div",
                               { key: _i, style: stl[1] },
                               React.createElement("input", { type: "checkbox", name: "sfami", id: this.state.sfam[_i / 2].nombre, value: this.state.sfam[_i / 2]._id, onClick: function (event) {
-                                        return _this3.clpr(event);
+                                        return _this4.clpr(event);
                                    }.bind(this), style: { display: "none" } }),
                               React.createElement(
                                    "label",
@@ -428,7 +539,7 @@ var Menu = function (_React$Component) {
                               "div",
                               { key: _i2, style: stl[1] },
                               React.createElement("input", { type: "checkbox", name: "consumo", id: this.state.prod[_i2 / 2].nombre, value: this.state.prod[_i2 / 2]._id, style: { display: "none" }, onClick: function (event) {
-                                        return _this3.proSet(event);
+                                        return _this4.proSet(event);
                                    }.bind(this) }),
                               React.createElement(
                                    "label",
@@ -481,8 +592,8 @@ var Menu = function (_React$Component) {
                var final = [];
                if (this.consumo[0]) {
                     var _loop = function _loop(_i3) {
-                         product = _this3.state.allpr.filter(function (doc) {
-                              return doc._id === _this3.state.consumo[_i3].plato;
+                         product = _this4.state.allpr.filter(function (doc) {
+                              return doc._id === _this4.state.consumo[_i3].plato;
                          });
 
                          if (product[0]) {
@@ -504,19 +615,19 @@ var Menu = function (_React$Component) {
                                    ),
                                    React.createElement(
                                         "div",
-                                        { ref: _this3.csm, style: { "display": "table-cell" } },
+                                        { ref: _this4.csm, style: { "display": "table-cell" } },
                                         React.createElement(
                                              "p",
                                              null,
-                                             _this3.state.consumo[_i3].observaciones
+                                             _this4.state.consumo[_i3].observaciones
                                         )
                                    ),
                                    React.createElement(
                                         "div",
                                         null,
                                         React.createElement("input", { type: "button", onClick: function (event) {
-                                                  return _this3.delete(event);
-                                             }.bind(_this3), value: "Eliminar" })
+                                                  return _this4.delete(event);
+                                             }.bind(_this4), value: "Eliminar" })
                                    )
                               );
                          }
@@ -540,7 +651,7 @@ var Menu = function (_React$Component) {
                          "div",
                          { style: { "display": "table-cell" } },
                          React.createElement("input", { type: "button", onClick: function (event) {
-                                   return _this3.mod(event);
+                                   return _this4.mod(event);
                               }.bind(this), value: "Modificar" })
                     ),
                     React.createElement("br", null)
@@ -556,7 +667,7 @@ var Menu = function (_React$Component) {
                     React.createElement(
                          "div",
                          { style: { "backgroundColor": "black", "width": "70px", "color": "white", "borderRadius": "1em" }, onClick: function (event) {
-                                   return _this3.atras(event);
+                                   return _this4.atras(event);
                               }.bind(this) },
                          React.createElement(
                               "h5",
@@ -586,7 +697,7 @@ var Menu = function (_React$Component) {
                               null,
                               React.createElement("br", null),
                               React.createElement("input", { type: "button", onClick: function (event) {
-                                        return _this3.next(event);
+                                        return _this4.next(event);
                                    }.bind(this), value: "Verificar Orden" })
                          )
                     )
@@ -599,8 +710,8 @@ var Menu = function (_React$Component) {
      return Menu;
 }(React.Component);
 
-var Modificar = function (_React$Component2) {
-     _inherits(Modificar, _React$Component2);
+var Modificar = function (_React$Component3) {
+     _inherits(Modificar, _React$Component3);
 
      /**
       * 
@@ -615,22 +726,24 @@ var Modificar = function (_React$Component2) {
            * @property {Array<*>} produc 
            * @property {boolean} showMenu 
            */
-          var _this4 = _possibleConstructorReturn(this, (Modificar.__proto__ || Object.getPrototypeOf(Modificar)).call(this, props));
+          var _this5 = _possibleConstructorReturn(this, (Modificar.__proto__ || Object.getPrototypeOf(Modificar)).call(this, props));
 
-          _this4.state = {
+          _this5.state = {
                pedido: props.ped,
                produc: props.produc,
-               showMenu: false
+               showMenu: false,
+               mesa: props.ped.mesa
           };
 
-          _this4.menu = React.createRef();
-          return _this4;
+          _this5.menu = React.createRef();
+          _this5.consumo = [];
+          return _this5;
      }
 
      _createClass(Modificar, [{
           key: "save",
           value: function save(event) {
-               var _this5 = this;
+               var _this6 = this;
 
                console.log(this.menu);
                var pd = this.state.pedido;
@@ -638,13 +751,14 @@ var Modificar = function (_React$Component2) {
                for (var j in this.menu.current.state.consumo) {
                     if (this.menu.current.state.consumo.hasOwnProperty(j)) {
                          pd.consumo.push(this.menu.current.state.consumo[j]);
+                         this.consumo.push(this.menu.current.state.consumo[j]);
                     }
                }
                pd.precio = 0;
 
                var _loop2 = function _loop2(_j) {
                     if (pd.consumo.hasOwnProperty(_j)) {
-                         fn = _this5.state.produc.find(function (doc) {
+                         fn = _this6.state.produc.find(function (doc) {
                               return doc._id === pd.consumo[_j].plato;
                          });
 
@@ -686,16 +800,19 @@ var Modificar = function (_React$Component2) {
      }, {
           key: "elim",
           value: function elim(event, i) {
-               var _this6 = this;
+               var _this7 = this;
 
                var pd = this.state.pedido;
                pd.consumo.splice(i, 1);
+               if (this.props.ped.length <= i) {
+                    this.consumo.splice(i - props.ped.length, 1);
+               }
                console.log(pd.consumo, i);
                pd.precio = 0;
 
                var _loop3 = function _loop3(j) {
                     if (pd.consumo.hasOwnProperty(j)) {
-                         fn = _this6.state.produc.find(function (doc) {
+                         fn = _this7.state.produc.find(function (doc) {
                               return doc._id === pd.consumo[j].plato;
                          });
 
@@ -716,13 +833,26 @@ var Modificar = function (_React$Component2) {
 
           /**
            * 
+           * @param {*} event 
+           */
+
+     }, {
+          key: "setMesa",
+          value: function setMesa(event) {
+               this.setState({
+                    mesa: event.target.value
+               });
+          }
+
+          /**
+           * 
            * @returns {Object} 
            */
 
      }, {
           key: "render",
           value: function render() {
-               var _this7 = this;
+               var _this8 = this;
 
                /**
                 * 
@@ -761,6 +891,7 @@ var Modificar = function (_React$Component2) {
                     "div",
                     null,
                     React.createElement("input", { type: "text", name: "pd", value: JSON.stringify(this.state.pedido), style: { "display": "none" }, readOnly: true }),
+                    React.createElement("input", { type: "text", name: "consumo", value: JSON.stringify(this.consumo), style: { "display": "none" }, readOnly: true }),
                     React.createElement("input", { type: "submit", value: "finalizar" })
                );
 
@@ -771,9 +902,9 @@ var Modificar = function (_React$Component2) {
                var pedList = [];
 
                var _loop4 = function _loop4(i) {
-                    if (_this7.state.pedido.consumo.hasOwnProperty(i)) {
-                         fn = _this7.state.produc.find(function (doc) {
-                              return doc._id === _this7.state.pedido.consumo[i].plato;
+                    if (_this8.state.pedido.consumo.hasOwnProperty(i)) {
+                         fn = _this8.state.produc.find(function (doc) {
+                              return doc._id === _this8.state.pedido.consumo[i].plato;
                          });
 
                          if (!fn) {
@@ -797,8 +928,8 @@ var Modificar = function (_React$Component2) {
                                    "td",
                                    { style: styElim },
                                    React.createElement("input", { type: "button", onClick: function (event, i) {
-                                             return _this7.elim(event, i);
-                                        }.bind(_this7), value: "Eliminar" })
+                                             return _this8.elim(event, i);
+                                        }.bind(_this8), value: "Eliminar" })
                               )
                          ));
                     }
@@ -853,6 +984,24 @@ var Modificar = function (_React$Component2) {
                          { action: "/edit", method: "post" },
                          React.createElement(
                               "div",
+                              null,
+                              React.createElement(
+                                   "label",
+                                   { htmlFor: "mesa" },
+                                   "Mesa #:\xA0"
+                              ),
+                              React.createElement("input", { type: "text", id: "mesa", name: "mesa", value: this.state.mesa, onChange: function (event) {
+                                        return _this8.setMesa(event);
+                                   }.bind(this) })
+                         ),
+                         React.createElement(
+                              "div",
+                              null,
+                              React.createElement(CiInput, { cli: this.props.cli, client: this.props.ped.clientid })
+                         ),
+                         React.createElement("br", null),
+                         React.createElement(
+                              "div",
                               { style: st },
                               React.createElement(
                                    "table",
@@ -891,12 +1040,12 @@ var Modificar = function (_React$Component2) {
                               "div",
                               null,
                               React.createElement("input", { type: "button", onClick: function (event) {
-                                        return _this7.save(event);
+                                        return _this8.save(event);
                                    }.bind(this), value: "Guardar Cambios" }),
                               React.createElement("br", null),
                               React.createElement(Menu, { ref: this.menu, ped: this.state.pedido, fam: this.props.fam, subfam: this.props.sfam, prod: this.props.produc })
                          ) : React.createElement("input", { type: "button", onClick: function (event) {
-                                   return _this7.addMenu(event);
+                                   return _this8.addMenu(event);
                               }.bind(this), value: "AgregarPlato" })
                     )
                );
@@ -951,8 +1100,16 @@ var produc = getVars('produc', function (doc) {
 });
 
 /**
+ * 
  * @type {Object}
  */
-var element = React.createElement(Modificar, { url: url, ped: pedido, fam: fam, sfam: sfam, produc: produc });
+var cli = getVars('cli', function (doc) {
+     return doc;
+});
+
+/**
+ * @type {Object}
+ */
+var element = React.createElement(Modificar, { cli: cli, url: url, ped: pedido, fam: fam, sfam: sfam, produc: produc });
 
 ReactDOM.render(element, document.getElementById('modify'));

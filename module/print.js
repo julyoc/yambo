@@ -100,7 +100,7 @@ module.exports = {
         const device = new escpos.USB(vid, pid);
         const printer = new escpos.Printer(device);
         var pr = "";
-        for (let i=0;i< 11; i++) {
+        for (let i=0;i< 10; i++) {
             if (pedido[i]) {
                 pr += pedido[i].cantidad + "  " + pedido[i].nombre + "\t $" + pedido[i].precio;
             }
@@ -109,6 +109,7 @@ module.exports = {
         device.open(err => {
             if (err) throw err;
             printer
+            //.encode('utf8')
             .font('a')
             .align('lt')
             .style('bu')
@@ -118,6 +119,7 @@ module.exports = {
             .text("RUC: " + cliente.RUC)
             .text("Direccion: " + cliente.direccion)
             .text("Telefono: " + cliente.telefono)
+            .text("Fecha: " + new Date.toLocaleDateString())
             .text(pr)
             .text("________________________")
             .text("Subtotal:  $ "+total)
